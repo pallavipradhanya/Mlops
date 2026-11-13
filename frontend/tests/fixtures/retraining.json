@@ -1,0 +1,15 @@
+[
+ {
+  "id": 1,
+  "trigger": "drift",
+  "status": "skipped",
+  "drift_detected": false,
+  "dataset_id": 1,
+  "candidate_version": null,
+  "champion_version": 1,
+  "candidate_metrics": null,
+  "champion_metrics": null,
+  "reason": "Drift-triggered run skipped: no dataset drift confirmed (5 of 19 features drifted (26%); threshold 30%.)",
+  "created_at": "2026-11-12T06:47:15.506703Z"
+ }
+]

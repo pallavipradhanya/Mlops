@@ -1,0 +1,12 @@
+.venv
+node_modules
+.git
+.dvc/cache
+artifacts
+mlruns
+reports
+models
+data
+frontend
+**/__pycache__
+**/.pytest_cache

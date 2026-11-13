@@ -1,0 +1,15 @@
+[
+ {
+  "id": 1,
+  "name": "ibm-telco-churn",
+  "version": 1,
+  "sha256": "a0ea74c48c1063be89a73ce3fb868593604c0129f2bf581934f04983d728b3b5",
+  "rows": 7043,
+  "columns": 21,
+  "churn_rate": 0.2653698707936959,
+  "source": "ibm-telco",
+  "dvc_tracked": false,
+  "dvc_md5": null,
+  "created_at": "2026-11-12T06:47:07.676108Z"
+ }
+]

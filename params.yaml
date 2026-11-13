@@ -1,0 +1,13 @@
+# Shared by the app and DVC (dvc tracks changes to these values).
+data:
+  test_size: 0.2
+  random_state: 42
+train:
+  random_state: 42
+  logistic_regression:
+    C: 1.0
+    max_iter: 1000
+  random_forest:
+    n_estimators: 200
+    max_depth: 12
+    min_samples_leaf: 2

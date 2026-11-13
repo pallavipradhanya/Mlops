@@ -1,0 +1,13 @@
+stages:
+  train:
+    cmd: python scripts/train.py --data data/telco_churn.csv --metrics-out reports/metrics.json
+    deps:
+      - data/telco_churn.csv
+      - backend/app
+      - scripts/train.py
+    params:
+      - data
+      - train
+    metrics:
+      - reports/metrics.json:
+          cache: false

@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push: { branches: [main] }
+  pull_request:
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip, cache-dependency-path: backend/requirements-dev.txt }
+      - run: pip install -r backend/requirements-dev.txt
+      - run: python -m pytest -q
+        working-directory: backend
+        env: { PYTHONPATH: . }
+
+  frontend-tests:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: frontend } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  ml-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip, cache-dependency-path: backend/requirements-dev.txt }
+      - run: pip install -r backend/requirements-dev.txt
+      - name: Prepare data (synthetic, so CI never depends on a download)
+        run: python scripts/prepare_data.py --synthetic
+      - name: DVC can version the dataset locally (no remote)
+        run: |
+          dvc init --no-scm -q
+          dvc add data/telco_churn.csv
+      - name: Train and validate metrics
+        run: |
+          python scripts/train.py --data data/telco_churn.csv --metrics-out reports/metrics.json
+          python - <<'PY'
+          import json
+          m = json.load(open("reports/metrics.json"))
+          for algo in ("logistic_regression", "random_forest"):
+              assert m[algo]["roc_auc"] > 0.70, f"{algo} ROC-AUC too low: {m[algo]['roc_auc']}"
+          print("Pipeline OK:", {k: round(m[k]["roc_auc"], 3) for k in ("logistic_regression", "random_forest")})
+          PY
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - run: docker compose config -q
+      - run: docker compose build

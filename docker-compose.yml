@@ -1,0 +1,69 @@
+# docker compose up --build
+# Everything is local: SQLite + local MLflow + local volumes. No cloud account needed.
+name: mlops360
+
+x-backend-build: &backend-build
+  context: .
+  dockerfile: backend/Dockerfile
+
+services:
+  mlflow:
+    build: *backend-build
+    image: mlops360-backend:latest
+    command:
+      - mlflow
+      - server
+      - --host=0.0.0.0
+      - --port=5000
+      - --backend-store-uri=sqlite:////mlflow/mlflow.db
+      - --artifacts-destination=/mlflow/artifacts
+      - --serve-artifacts
+      - --allowed-hosts=localhost:5000,127.0.0.1:5000,mlflow:5000,mlflow,localhost,127.0.0.1
+      - --cors-allowed-origins=http://localhost:5000,http://127.0.0.1:5000,http://localhost:3000
+    ports: ["5000:5000"]
+    volumes: ["mlflow_data:/mlflow"]
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "--max-time", "8", "http://127.0.0.1:5000/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 12
+      start_period: 90s
+    mem_limit: 1g
+    restart: unless-stopped
+
+  backend:
+    build: *backend-build
+    image: mlops360-backend:latest
+    depends_on:
+      mlflow: { condition: service_healthy }
+    environment:
+      MLOPS_HOME: /workspace
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      MLFLOW_UI_URL: http://localhost:5000
+      CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+      ENABLE_SCHEDULER: "1"
+    ports: ["8000:8000"]
+    volumes:
+      - ./data:/workspace/data            # datasets stay visible on your disk (DVC-friendly)
+      - ./params.yaml:/workspace/params.yaml:ro
+      - app_artifacts:/workspace/artifacts  # SQLite app database
+      - app_models:/workspace/models        # drift reference samples
+      - app_reports:/workspace/reports      # Evidently HTML reports
+    mem_limit: 2g
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    depends_on: [backend]
+    ports: ["3000:3000"]
+    mem_limit: 512m
+    restart: unless-stopped
+
+volumes:
+  mlflow_data:
+  app_artifacts:
+  app_models:
+  app_reports:

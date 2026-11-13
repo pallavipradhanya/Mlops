@@ -1,0 +1,16 @@
+# Runtime dependencies. Versions below were installed together and tested (Python 3.12).
+# NOTE: Evidently 0.7.x requires pandas < 3 -- do not upgrade pandas past 2.x until Evidently supports it.
+fastapi==0.162.4
+uvicorn[standard]==0.54.0
+python-multipart==0.0.33
+SQLAlchemy==2.1.8
+pydantic==2.14.3
+PyYAML==6.0.3
+requests==2.34.2
+APScheduler==3.11.3
+pandas==2.3.3
+numpy==2.3.5
+scikit-learn==1.9.1
+joblib==1.6.0
+mlflow==3.18.0
+evidently==0.7.23

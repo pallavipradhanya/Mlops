@@ -1,0 +1,500 @@
+[
+ {
+  "id": 3,
+  "status": "completed",
+  "message": "5 of 19 features drifted (26%); threshold 30%.",
+  "model_version": 1,
+  "reference_rows": 2000,
+  "current_rows": 300,
+  "dataset_drift": false,
+  "drift_share": 0.2631578947368421,
+  "threshold": 0.3,
+  "columns": [
+   {
+    "column": "tenure",
+    "method": "Wasserstein distance (normed)",
+    "threshold": 0.1,
+    "value": 0.6538973609590212,
+    "drifted": true
+   },
+   {
+    "column": "MonthlyCharges",
+    "method": "Wasserstein distance (normed)",
+    "threshold": 0.1,
+    "value": 0.5747858863981777,
+    "drifted": true
+   },
+   {
+    "column": "TotalCharges",
+    "method": "Wasserstein distance (normed)",
+    "threshold": 0.1,
+    "value": 0.39454352378592,
+    "drifted": true
+   },
+   {
+    "column": "prediction",
+    "method": "Wasserstein distance (normed)",
+    "threshold": 0.1,
+    "value": 0.2810155225422165,
+    "drifted": true
+   },
+   {
+    "column": "gender",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.0004714172142812382,
+    "drifted": false
+   },
+   {
+    "column": "Partner",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.0018857013356371392,
+    "drifted": false
+   },
+   {
+    "column": "Dependents",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.005513210499860337,
+    "drifted": false
+   },
+   {
+    "column": "PhoneService",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.037782652220930885,
+    "drifted": false
+   },
+   {
+    "column": "MultipleLines",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.039690928044861046,
+    "drifted": false
+   },
+   {
+    "column": "InternetService",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.09894634083076968,
+    "drifted": false
+   },
+   {
+    "column": "OnlineSecurity",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.02628071712010154,
+    "drifted": false
+   },
+   {
+    "column": "OnlineBackup",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.05659826386581585,
+    "drifted": false
+   },
+   {
+    "column": "DeviceProtection",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.09636775882828937,
+    "drifted": false
+   },
+   {
+    "column": "TechSupport",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.0672482670977746,
+    "drifted": false
+   },
+   {
+    "column": "StreamingTV",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.0760653249719276,
+    "drifted": false
+   },
+   {
+    "column": "StreamingMovies",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.06722605000814284,
+    "drifted": false
+   },
+   {
+    "column": "Contract",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.16529146307031606,
+    "drifted": true
+   },
+   {
+    "column": "PaperlessBilling",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.020804008349609257,
+    "drifted": false
+   },
+   {
+    "column": "PaymentMethod",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.12265490700947744,
+    "drifted": true
+   },
+   {
+    "column": "SeniorCitizen",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.024483646561387063,
+    "drifted": false
+   }
+  ],
+  "prediction_drift": {
+   "column": "prediction",
+   "method": "Wasserstein distance (normed)",
+   "threshold": 0.1,
+   "value": 0.2810155225422165,
+   "drifted": true,
+   "reference_mean": 0.2580852922231996,
+   "current_mean": 0.27324139077766846,
+   "reference_positive_rate": 0.2025,
+   "current_positive_rate": 0.13
+  },
+  "has_html": true,
+  "created_at": "2026-11-12T06:47:15.420347Z"
+ },
+ {
+  "id": 2,
+  "status": "completed",
+  "message": "5 of 19 features drifted (26%); threshold 30%.",
+  "model_version": 1,
+  "reference_rows": 2000,
+  "current_rows": 300,
+  "dataset_drift": false,
+  "drift_share": 0.2631578947368421,
+  "threshold": 0.3,
+  "columns": [
+   {
+    "column": "tenure",
+    "method": "Wasserstein distance (normed)",
+    "threshold": 0.1,
+    "value": 0.6538973609590212,
+    "drifted": true
+   },
+   {
+    "column": "MonthlyCharges",
+    "method": "Wasserstein distance (normed)",
+    "threshold": 0.1,
+    "value": 0.5747858863981777,
+    "drifted": true
+   },
+   {
+    "column": "TotalCharges",
+    "method": "Wasserstein distance (normed)",
+    "threshold": 0.1,
+    "value": 0.39454352378592,
+    "drifted": true
+   },
+   {
+    "column": "prediction",
+    "method": "Wasserstein distance (normed)",
+    "threshold": 0.1,
+    "value": 0.2810155225422165,
+    "drifted": true
+   },
+   {
+    "column": "gender",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.0004714172142812382,
+    "drifted": false
+   },
+   {
+    "column": "Partner",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.0018857013356371392,
+    "drifted": false
+   },
+   {
+    "column": "Dependents",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.005513210499860337,
+    "drifted": false
+   },
+   {
+    "column": "PhoneService",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.037782652220930885,
+    "drifted": false
+   },
+   {
+    "column": "MultipleLines",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.039690928044861046,
+    "drifted": false
+   },
+   {
+    "column": "InternetService",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.09894634083076968,
+    "drifted": false
+   },
+   {
+    "column": "OnlineSecurity",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.02628071712010154,
+    "drifted": false
+   },
+   {
+    "column": "OnlineBackup",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.05659826386581585,
+    "drifted": false
+   },
+   {
+    "column": "DeviceProtection",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.09636775882828937,
+    "drifted": false
+   },
+   {
+    "column": "TechSupport",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.0672482670977746,
+    "drifted": false
+   },
+   {
+    "column": "StreamingTV",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.0760653249719276,
+    "drifted": false
+   },
+   {
+    "column": "StreamingMovies",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.06722605000814284,
+    "drifted": false
+   },
+   {
+    "column": "Contract",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.16529146307031606,
+    "drifted": true
+   },
+   {
+    "column": "PaperlessBilling",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.020804008349609257,
+    "drifted": false
+   },
+   {
+    "column": "PaymentMethod",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.12265490700947744,
+    "drifted": true
+   },
+   {
+    "column": "SeniorCitizen",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.024483646561387063,
+    "drifted": false
+   }
+  ],
+  "prediction_drift": {
+   "column": "prediction",
+   "method": "Wasserstein distance (normed)",
+   "threshold": 0.1,
+   "value": 0.2810155225422165,
+   "drifted": true,
+   "reference_mean": 0.2580852922231996,
+   "current_mean": 0.27324139077766846,
+   "reference_positive_rate": 0.2025,
+   "current_positive_rate": 0.13
+  },
+  "has_html": true,
+  "created_at": "2026-11-12T06:47:14.424082Z"
+ },
+ {
+  "id": 1,
+  "status": "completed",
+  "message": "0 of 19 features drifted (0%); threshold 30%.",
+  "model_version": 1,
+  "reference_rows": 2000,
+  "current_rows": 400,
+  "dataset_drift": false,
+  "drift_share": 0.0,
+  "threshold": 0.3,
+  "columns": [
+   {
+    "column": "tenure",
+    "method": "Wasserstein distance (normed)",
+    "threshold": 0.1,
+    "value": 0.0923629096840838,
+    "drifted": false
+   },
+   {
+    "column": "MonthlyCharges",
+    "method": "Wasserstein distance (normed)",
+    "threshold": 0.1,
+    "value": 0.04020189338828151,
+    "drifted": false
+   },
+   {
+    "column": "TotalCharges",
+    "method": "Wasserstein distance (normed)",
+    "threshold": 0.1,
+    "value": 0.08232198312299165,
+    "drifted": false
+   },
+   {
+    "column": "prediction",
+    "method": "Wasserstein distance (normed)",
+    "threshold": 0.1,
+    "value": 0.11163227675871738,
+    "drifted": true
+   },
+   {
+    "column": "gender",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.016626028676515366,
+    "drifted": false
+   },
+   {
+    "column": "Partner",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.0042427297873203216,
+    "drifted": false
+   },
+   {
+    "column": "Dependents",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.009974019583285825,
+    "drifted": false
+   },
+   {
+    "column": "PhoneService",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.01165878547722069,
+    "drifted": false
+   },
+   {
+    "column": "MultipleLines",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.019885092264875587,
+    "drifted": false
+   },
+   {
+    "column": "InternetService",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.014677056376535722,
+    "drifted": false
+   },
+   {
+    "column": "OnlineSecurity",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.03806548088593665,
+    "drifted": false
+   },
+   {
+    "column": "OnlineBackup",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.019230236661865723,
+    "drifted": false
+   },
+   {
+    "column": "DeviceProtection",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.03450016500065854,
+    "drifted": false
+   },
+   {
+    "column": "TechSupport",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.04237521678949143,
+    "drifted": false
+   },
+   {
+    "column": "StreamingTV",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.02522011081387564,
+    "drifted": false
+   },
+   {
+    "column": "StreamingMovies",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.04767629414138944,
+    "drifted": false
+   },
+   {
+    "column": "Contract",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.04126608572262133,
+    "drifted": false
+   },
+   {
+    "column": "PaperlessBilling",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.015940528945782798,
+    "drifted": false
+   },
+   {
+    "column": "PaymentMethod",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.03962917148114281,
+    "drifted": false
+   },
+   {
+    "column": "SeniorCitizen",
+    "method": "Jensen-Shannon distance",
+    "threshold": 0.1,
+    "value": 0.01382168784624996,
+    "drifted": false
+   }
+  ],
+  "prediction_drift": {
+   "column": "prediction",
+   "method": "Wasserstein distance (normed)",
+   "threshold": 0.1,
+   "value": 0.11163227675871738,
+   "drifted": true,
+   "reference_mean": 0.2580852922231996,
+   "current_mean": 0.2829182520445841,
+   "reference_positive_rate": 0.2025,
+   "current_positive_rate": 0.235
+  },
+  "has_html": true,
+  "created_at": "2026-11-12T06:47:13.269161Z"
+ }
+]

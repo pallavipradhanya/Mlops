@@ -1,0 +1,44 @@
+[
+ {
+  "id": 7,
+  "event": "retraining.skipped",
+  "message": "Retraining #1 (drift): Drift-triggered run skipped: no dataset drift confirmed (5 of 19 features drifted (26%); threshold 30%.)",
+  "created_at": "2026-11-12T06:47:15.510091Z"
+ },
+ {
+  "id": 6,
+  "event": "monitoring.completed",
+  "message": "Drift report #3: 5 of 19 features drifted (26%); threshold 30%.",
+  "created_at": "2026-11-12T06:47:15.498942Z"
+ },
+ {
+  "id": 5,
+  "event": "monitoring.completed",
+  "message": "Drift report #2: 5 of 19 features drifted (26%); threshold 30%.",
+  "created_at": "2026-11-12T06:47:14.538119Z"
+ },
+ {
+  "id": 4,
+  "event": "monitoring.completed",
+  "message": "Drift report #1: 0 of 19 features drifted (0%); threshold 30%.",
+  "created_at": "2026-11-12T06:47:13.344975Z"
+ },
+ {
+  "id": 3,
+  "event": "model.promoted",
+  "message": "Model v1 promoted to champion (First registered model; no champion existed)",
+  "created_at": "2026-11-12T06:47:10.342299Z"
+ },
+ {
+  "id": 2,
+  "event": "training.completed",
+  "message": "Trained logistic_regression, random_forest on dataset 1; registered model v1 (logistic_regression, ROC-AUC 0.842)",
+  "created_at": "2026-11-12T06:47:10.302964Z"
+ },
+ {
+  "id": 1,
+  "event": "dataset.registered",
+  "message": "Dataset 'ibm-telco-churn' v1 registered (7043 rows, source=ibm-telco)",
+  "created_at": "2026-11-12T06:47:07.681906Z"
+ }
+]

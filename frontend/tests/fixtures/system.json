@@ -1,0 +1,22 @@
+{
+ "mlflow_ui_url": "http://localhost:5000",
+ "mlflow_tracking_uri": "sqlite:////tmp/e2e/artifacts/mlflow.db",
+ "database_url": "/tmp/e2e/artifacts/mlops360.db",
+ "model_name": "churn-model",
+ "scheduler": {
+  "running": false,
+  "enabled": false,
+  "next_run": null
+ },
+ "versions": {
+  "python": "3.12.3",
+  "mlflow": "3.18.0",
+  "evidently": "0.7.23",
+  "scikit-learn": "1.9.1"
+ },
+ "paths": {
+  "data": "/tmp/e2e/data",
+  "reports": "/tmp/e2e/reports",
+  "models": "/tmp/e2e/models"
+ }
+}

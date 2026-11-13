@@ -1,0 +1,63 @@
+[
+ {
+  "id": 2,
+  "run_id": "3fc4664cb0e645a19c1f00297a779114",
+  "algorithm": "random_forest",
+  "dataset_id": 1,
+  "params": {
+   "n_estimators": 200,
+   "max_depth": 12,
+   "min_samples_leaf": 2
+  },
+  "metrics": {
+   "accuracy": 0.794180269694819,
+   "precision": 0.6418918918918919,
+   "recall": 0.5080213903743316,
+   "f1": 0.5671641791044776,
+   "roc_auc": 0.8367898938231418
+  },
+  "confusion_matrix": [
+   [
+    929,
+    106
+   ],
+   [
+    184,
+    190
+   ]
+  ],
+  "trigger": "manual",
+  "registered_version": null,
+  "created_at": "2026-11-12T06:47:10.296404Z"
+ },
+ {
+  "id": 1,
+  "run_id": "27efb5ca00a24cf0b6273540b3afcba5",
+  "algorithm": "logistic_regression",
+  "dataset_id": 1,
+  "params": {
+   "C": 1.0,
+   "max_iter": 1000
+  },
+  "metrics": {
+   "accuracy": 0.7991483321504613,
+   "precision": 0.6531986531986532,
+   "recall": 0.5187165775401069,
+   "f1": 0.5782414307004471,
+   "roc_auc": 0.8422149887623034
+  },
+  "confusion_matrix": [
+   [
+    932,
+    103
+   ],
+   [
+    180,
+    194
+   ]
+  ],
+  "trigger": "manual",
+  "registered_version": 1,
+  "created_at": "2026-11-12T06:47:10.296390Z"
+ }
+]

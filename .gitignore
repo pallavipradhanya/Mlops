@@ -1,0 +1,56 @@
+
+# Python environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Frontend dependencies
+node_modules/
+.next/
+dist/
+build/
+
+# Local application state
+artifacts/*
+!artifacts/.gitkeep
+
+mlruns/*
+!mlruns/.gitkeep
+
+reports/*
+!reports/.gitkeep
+
+models/*
+!models/.gitkeep
+
+data/uploads/
+data/cache/
+
+# MLflow
+mlartifacts/
+mlflow.db
+*.sqlite
+*.sqlite3
+
+# Logs and temporary files
+*.log
+temp/
+tmp/
+
+# IDE and operating system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
