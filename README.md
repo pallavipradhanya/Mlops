@@ -1,14 +1,16 @@
-# MLOps360 — End-to-End MLOps Pipeline for a Deployed Churn Model
+# MLOps — End-to-End MLOps Pipeline for a Deployed Churn Model
 
-A complete, **zero-cost, local-only** MLOps application: upload and version datasets, train and track models,
-register and promote versions, serve predictions, monitor data drift, and retrain automatically — all through a
-dashboard. No cloud account, no paid API, no credit card. Everything runs on `localhost`.
+A complete, **zero-cost, local-only** MLOps application: upload and version datasets, train and track models, register and promote versions, serve predictions, monitor data drift, and retrain automatically — all through a dashboard.
+
+No cloud account, no paid API, no credit card. Everything runs on `localhost`.
+
+## Technology Stack
 
 | Layer | Tooling |
 |---|---|
 | Frontend | Next.js 16, TypeScript, Tailwind CSS 4, Recharts, Lucide |
 | Backend | FastAPI, SQLAlchemy, Pydantic, SQLite, APScheduler |
-| ML | scikit-learn (Logistic Regression, Random Forest), pandas, NumPy |
+| Machine Learning | scikit-learn (Logistic Regression, Random Forest), pandas, NumPy |
 | MLOps | DVC (local cache), MLflow (tracking + model registry), Evidently AI (drift), Docker Compose, GitHub Actions |
 
 ## Architecture
@@ -25,7 +27,7 @@ flowchart LR
   GHA["GitHub Actions (optional)"] -.tests, pipeline check, docker build.-> API
 ```
 
-**Retraining loop**
+### Retraining Workflow
 
 ```mermaid
 flowchart TD
@@ -43,165 +45,273 @@ flowchart TD
   G --> R[One-click rollback]
 ```
 
-Source of truth: **DVC** = dataset files · **MLflow** = runs, artifacts, model versions, which version is live ·
-**SQLite** = app records the UI reads · **`reports/`** = Evidently HTML.
+**Source of truth:**
+- **DVC:** Dataset files and versioning.
+- **MLflow:** Experiments, artifacts, model versions, and active model.
+- **SQLite:** Application records displayed in the dashboard.
+- **Reports:** Evidently-generated HTML reports.
 
-## What was verified (and what was not)
+## What Was Verified
 
 | Area | Status |
 |---|---|
-| Backend tests (unit, API, ML pipeline, prediction, monitoring, retraining, integration) | **36 pass**, in a clean virtualenv built from `requirements-dev.txt`; `pip check` clean |
-| Training on the **real IBM Telco dataset** (7,043 rows) | Tested: ROC-AUC 0.842 (Logistic Regression), 0.837 (Random Forest) |
-| DVC `add` + `dvc repro` (local cache, no remote) | Tested, including `dvc init --no-scm` as used in CI |
-| MLflow in **server mode** (the Docker topology: `--serve-artifacts`, remote tracking URI) | Tested end to end through the backend |
-| Evidently drift: no-drift case, shifted case, insufficient-data case | Tested |
-| Frontend: type-check, 6 unit tests, 11 page tests rendering every page against **real API responses**, production build, standalone server (the Docker run stage) serving all 9 routes | Tested |
-| `docker compose build/up` | **Not run** — no Docker in the build environment. The files are written to mirror the steps above, but run `docker compose up --build` once and tell me if anything fails |
-| GitHub Actions | **Not run on GitHub.** Each job's steps were run locally; YAML validated |
-| Visual check in a real browser / screenshots | **Not done** (see "Screenshots" below) |
-| Windows | Developed and tested on Linux. Paths use `pathlib`/`as_posix()` throughout; PowerShell scripts untested |
+| Backend tests (unit, API, ML pipeline, prediction, monitoring, retraining, integration) | **36 passed** in a clean virtual environment; `pip check` clean |
+| Training on real IBM Telco dataset (7,043 rows) | Tested: ROC-AUC 0.842 (Logistic Regression), 0.837 (Random Forest) |
+| DVC `add` + `dvc repro` (local cache, no remote) | Tested |
+| MLflow server mode | Tested end-to-end through the backend |
+| Evidently drift detection | Tested: no-drift, shifted-data, and insufficient-data cases |
+| Frontend | Type-check, 6 unit tests, 11 page tests, production build, and standalone server tested |
+| Docker Compose build/up | Not run in the original build environment |
+| GitHub Actions | Not run on GitHub; individual job steps were run locally and YAML validated |
+| Visual browser testing | Not completed |
+| Windows | Developed and tested on Linux; PowerShell scripts remain untested |
 
-Package versions are pinned to a combination that was installed and tested together. One real incompatibility
-was found and is documented in `requirements.txt`: **Evidently 0.7.x requires pandas < 3**.
+Package versions are pinned to compatible versions. Evidently 0.7.x requires `pandas < 3`.
 
-## Quick start A — Docker (single command)
+## Quick Start A — Docker
 
-Requires Docker Desktop (WSL2 backend). On an 8 GB laptop, limit WSL first — create `%UserProfile%\.wslconfig`:
+Requires Docker Desktop with the WSL2 backend.
 
-```
+For an 8 GB laptop, consider limiting WSL resources by creating `%UserProfile%\.wslconfig`:
+
+```ini
 [wsl2]
 memory=3GB
 processors=2
 ```
-then `wsl --shutdown`.
+
+Then run:
 
 ```powershell
+wsl --shutdown
 docker compose up --build
 ```
 
+### Application URLs
+
 | Service | URL |
 |---|---|
-| Dashboard | http://localhost:3000 |
-| API + Swagger | http://localhost:8000/docs |
+| MLOps Dashboard | http://localhost:3000 |
+| Backend API + Swagger | http://localhost:8000/docs |
 | MLflow UI | http://localhost:5000 |
 
-State is kept in named volumes (`mlflow_data`, `app_artifacts`, `app_models`, `app_reports`) and your `./data`
-folder, so it survives `docker compose down`. (`docker compose down -v` deletes the volumes.)
-Memory limits: MLflow 1 GB, API 2 GB, frontend 512 MB. The API and MLflow share one image to save disk.
+Application state is stored in Docker named volumes and the local `data` folder. It survives `docker compose down`. Running `docker compose down -v` deletes the volumes.
 
-## Quick start B — without Docker (Windows PowerShell)
+## Quick Start B — Without Docker (Windows)
 
-Prerequisites: Python 3.12 (3.11 should also work), Node.js 22 LTS (20 should work), Git.
+### Prerequisites
+
+- Python 3.12 (Python 3.11 should also work)
+- Node.js 22 LTS (Node.js 20 should work)
+- Git
+
+### Setup
 
 ```powershell
 cd C:\dev\mlops360
-.\scripts\setup_windows.ps1      # venv + pip install + npm install
-.\scripts\start_local.ps1        # opens MLflow UI, API and dashboard in 3 windows
+.\scripts\setup_windows.ps1
+.\scripts\start_local.ps1
 ```
 
-Or manually, in three terminals:
+The setup script creates the virtual environment and installs dependencies. The start script opens the MLflow UI, backend API, and frontend dashboard in separate windows.
+
+### Manual Setup
+
+Run the following commands in three separate terminals:
+
+**Terminal 1 — MLflow UI**
 
 ```powershell
-# 1) MLflow UI (reads the same local SQLite store the API writes to)
 .\.venv\Scripts\python -m mlflow ui --backend-store-uri sqlite:///C:/dev/mlops360/artifacts/mlflow.db --port 5000
-# 2) API
-cd backend; ..\.venv\Scripts\python -m uvicorn app.main:app --port 8000
-# 3) Dashboard
-cd frontend; npm run dev
 ```
 
-## Five-minute demo
-
-1. **Datasets** → *Generate* (synthetic) or *Download dataset* (real IBM Telco; needs internet once).
-2. **Model Training** → *Train*. Both algorithms are tracked; the best (by ROC-AUC) is registered as **v1** and goes live.
-3. **Predictions** → score a customer. Then in a terminal: `python scripts/simulate_traffic.py --n 300`.
-4. **Monitoring** → *Run drift check* → no drift (Evidently report embedded in the page).
-5. **Settings** → set *Monitoring window* to `300`. Run `python scripts/simulate_traffic.py --n 300 --drift`, then *Run drift check* again → drift detected. (Use the *synthetic* dataset in step 1 for the clearest demo; the shifted traffic is less obvious against the real IBM data and may stay under the 30% threshold — that is the system correctly refusing to cry wolf.)
-6. **Retraining** → *Drift-triggered check* trains a candidate only if drift is confirmed, compares it with the champion on the same held-out data, and promotes or rejects it with a written reason.
-7. **Model Registry** → *Roll back* restores the previous champion in one click.
-
-`simulate_traffic.py` generates labelled-as-synthetic demo traffic through the real prediction endpoint; it does not
-fabricate monitoring output.
-
-## Key design decisions
-
-- **No leakage**: imputers, scaler and encoder live *inside* the sklearn pipeline and are fit on the training split only. Feature engineering is a pure function (no fitted statistics). Stratified split, fixed seeds (`params.yaml`), and tests that prove both.
-- **One code path for training and serving**: the saved pipeline accepts raw customer rows, so predictions can't drift from training logic.
-- **Aliases, not stages**: promotion moves the MLflow alias `champion`; the old champion becomes `previous`. Nothing is ever deleted.
-- **Drift ≠ degradation**: drift only *triggers* a candidate. Promotion requires the candidate to clear an absolute ROC-AUC floor and beat the champion on F1 and ROC-AUC (margin configurable) on identical held-out data. A model that fails is rejected and the champion stays live.
-- **Honest monitoring**: with fewer than *min rows* predictions you get an `insufficient_data` report, never invented numbers.
-- **Frontend shows only API data**: no hard-coded metrics anywhere; empty states explain what to do next.
-- Models are saved with cloudpickle (needed for the custom feature function). Only load models you trained yourself.
-
-## DVC (local cache, no remote)
+**Terminal 2 — Backend API**
 
 ```powershell
-dvc init                                  # once, inside the git repo
-python scripts/prepare_data.py            # downloads IBM data, or generates synthetic if offline
+cd backend
+..\.venv\Scripts\python -m uvicorn app.main:app --port 8000
+```
+
+**Terminal 3 — Frontend**
+
+```powershell
+cd frontend
+npm run dev
+```
+
+## Five-Minute Demo
+
+1. **Datasets:** Generate a synthetic dataset or download the real IBM Telco dataset.
+2. **Model Training:** Train the models. Both algorithms are tracked, and the best model based on ROC-AUC is registered as version 1.
+3. **Predictions:** Score a customer. Generate additional traffic using:
+
+   ```powershell
+   python scripts/simulate_traffic.py --n 300
+   ```
+
+4. **Monitoring:** Run a drift check to view the Evidently report.
+5. **Simulate Drift:** Set the monitoring window to 300 in Settings. Run:
+
+   ```powershell
+   python scripts/simulate_traffic.py --n 300 --drift
+   ```
+
+   Run the drift check again to observe drift detection.
+
+6. **Retraining:** Run a drift-triggered check. The system trains a candidate model and compares it against the current champion.
+7. **Model Registry:** Roll back to the previous champion with one click.
+
+The traffic simulation generates labelled-as-synthetic demo traffic through the real prediction endpoint. It does not fabricate monitoring output.
+
+## Key Design Decisions
+
+- **No data leakage:** Imputers, scaler, and encoder are included inside the scikit-learn pipeline and fitted only on the training split.
+- **Consistent training and prediction:** The same saved pipeline is used for training and serving.
+- **Model versioning:** MLflow aliases manage model promotion. The previous champion is retained.
+- **Reliable retraining:** Drift triggers candidate training, but promotion requires the candidate to satisfy performance rules against the existing champion.
+- **Honest monitoring:** Insufficient prediction data produces an `insufficient_data` report rather than misleading metrics.
+- **API-driven frontend:** Dashboard metrics are retrieved from the backend API.
+- **Model persistence:** Models are saved using cloudpickle. Only load models that you trust and trained yourself.
+
+## DVC — Local Dataset Versioning
+
+DVC manages dataset versions using a local cache without requiring a cloud remote.
+
+```powershell
+dvc init
+python scripts/prepare_data.py
 dvc add data/telco_churn.csv
-git add data/telco_churn.csv.dvc data/.gitignore params.yaml dvc.yaml; git commit -m "track dataset v1"
-dvc repro                                 # trains only if data, code or params changed
-# new data version:
-dvc add data/telco_churn.csv; git commit -am "dataset v2"
+git add data/telco_churn.csv.dvc data/.gitignore params.yaml dvc.yaml
+git commit -m "Track dataset v1"
+dvc repro
 ```
-Do not add a DVC remote — everything stays in `.dvc/cache`.
 
-## Scheduled retraining
-
-Either set **Schedule hours** on the Settings page (built-in scheduler, runs while the API is up), or use Windows
-Task Scheduler: `.\scripts\schedule_retraining.ps1 -Time 02:00` (calls `scripts/run_retraining.py`, which exits
-non-zero on failure).
-
-## Tests
+For a new dataset version:
 
 ```powershell
-cd backend;  $env:PYTHONPATH="."; ..\.venv\Scripts\python -m pytest -q     # 36 tests
-cd frontend; npm run typecheck; npm test; npm run build                       # 17 tests
+dvc add data/telco_churn.csv
+git commit -am "Dataset v2"
 ```
-Backend tests are fully isolated (temporary project root, SQLite and MLflow store) and need no network.
-The frontend page tests use fixtures captured from the real API (`frontend/tests/fixtures/`); if you change an API
-response shape, regenerate them.
 
-## API overview (Swagger at `/docs`)
+No DVC remote is configured. Everything stays in the local `.dvc/cache`.
 
-`GET /api/overview` · `GET|POST /api/datasets…` (`upload`, `generate`, `download-telco`, `{id}/preview`) ·
-`POST /api/train` · `GET /api/experiments` · `GET /api/models` · `POST /api/models/{v}/promote|reject` ·
-`POST /api/models/rollback` · `POST /api/predict` · `POST /api/predict/batch` · `GET /api/predictions` ·
-`POST /api/monitoring/run` · `GET /api/monitoring/reports[/{id}/html]` · `POST /api/retraining/run` ·
-`GET /api/retraining/history` · `GET|PUT /api/settings` · `GET /api/activity` · `GET /api/system` · `GET /api/health`
+## Scheduled Retraining
 
-## Project structure
+Retraining can be scheduled in two ways:
 
+1. Set **Schedule hours** on the Settings page. The built-in APScheduler runs while the API is active.
+2. Use Windows Task Scheduler with:
+
+```powershell
+.\scripts\schedule_retraining.ps1 -Time 02:00
 ```
+
+This calls `scripts/run_retraining.py` and exits with a non-zero status if retraining fails.
+
+## Testing
+
+### Backend Tests
+
+```powershell
+cd backend
+$env:PYTHONPATH="."
+..\.venv\Scripts\python -m pytest -q
+```
+
+### Frontend Tests
+
+```powershell
+cd frontend
+npm run typecheck
+npm test
+npm run build
+```
+
+Backend tests use isolated temporary project directories, SQLite databases, and MLflow stores. They do not require network access.
+
+Frontend page tests use fixtures captured from actual API responses.
+
+## API Overview
+
+Swagger documentation is available at:
+
+`http://localhost:8000/docs`
+
+Main API capabilities include:
+
+- Dataset upload, generation, download, and preview.
+- Model training and experiment tracking.
+- Model registry, promotion, rejection, and rollback.
+- Single and batch predictions.
+- Data drift monitoring and report retrieval.
+- Automated retraining and history.
+- Application settings and activity tracking.
+- System health monitoring.
+
+## Project Structure
+
+```text
 mlops360/
-├── backend/app/{api,core,database,ml,models,schemas,services,monitoring,retraining}  tests/  Dockerfile  requirements*.txt
-├── frontend/            Next.js app (app/, components/, lib/, tests/) + Dockerfile
-├── scripts/             prepare_data, train (DVC entry), simulate_traffic, run_retraining, *.ps1
-├── data/  models/  reports/  artifacts/  mlruns/    local state (git-ignored contents)
-├── dvc.yaml  params.yaml  docker-compose.yml  .env.example
-└── .github/workflows/ci.yml                          backend, frontend, ML pipeline, docker build
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── core/
+│   │   ├── database/
+│   │   ├── ml/
+│   │   ├── models/
+│   │   ├── schemas/
+│   │   ├── services/
+│   │   ├── monitoring/
+│   │   └── retraining/
+│   ├── tests/
+│   ├── Dockerfile
+│   └── requirements.txt
+├── frontend/
+│   ├── app/
+│   ├── components/
+│   ├── lib/
+│   ├── tests/
+│   └── Dockerfile
+├── scripts/
+│   ├── prepare_data.py
+│   ├── train.py
+│   ├── simulate_traffic.py
+│   └── run_retraining.py
+├── data/
+├── models/
+├── reports/
+├── artifacts/
+├── mlruns/
+├── dvc.yaml
+├── params.yaml
+├── docker-compose.yml
+└── .github/
+    └── workflows/
+        └── ci.yml
 ```
 
 ## Troubleshooting
 
-- **`Cannot reach the backend` in the dashboard** — start the API (`:8000`). If you changed ports, set `NEXT_PUBLIC_API_URL` and rebuild/restart the frontend; add the origin to `CORS_ORIGINS`.
-- **MLflow shows `unreachable` in Docker** — it needs ~20 s to start; the API waits for its health check. Check `docker compose logs mlflow`.
-- **MLflow "Invalid Host header" (own setups)** — MLflow 3.x validates the Host header; add your hostname to `--allowed-hosts` (already set in `docker-compose.yml`).
-- **`pip install` pulls pandas 3** — don't; Evidently 0.7 needs `pandas<3` (pinned).
-- **PowerShell blocks `Activate.ps1`** — `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
-- **Out of memory on 8 GB** — use Quick start B while developing; keep Docker for demos with the `.wslconfig` limits above.
-- **Disk usage** — the backend image is large (~2 GB) because MLflow and Evidently are full-featured libraries; `docker image prune` after rebuilds.
+- **Cannot reach the backend:** Ensure the API is running on port 8000. Check `NEXT_PUBLIC_API_URL` and `CORS_ORIGINS` if using different ports.
+- **MLflow unavailable in Docker:** Allow approximately 20 seconds for startup. Check `docker compose logs mlflow`.
+- **MLflow Invalid Host header:** Add your hostname to MLflow's `--allowed-hosts` configuration.
+- **pandas installation issue:** Use the pinned version because Evidently 0.7 requires `pandas < 3`.
+- **PowerShell blocks Activate.ps1:** Run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
+- **Out of memory:** Use the non-Docker setup during development on machines with limited RAM.
+- **Disk usage:** The backend image can be large because it includes MLflow and Evidently.
 
 ## Screenshots
 
-I could not launch a browser in the build environment, so no screenshots are included. After the demo above, capture
-these into `docs/screenshots/` for your portfolio: Overview, Model Training results, Experiments comparison,
-Model Registry (champion/previous), Monitoring (drift table + embedded Evidently report), Retraining history,
-MLflow UI runs page.
+Screenshots are not included yet. Add the following dashboard screenshots to `docs/screenshots/` to improve the project presentation:
 
-## Limitations (stated plainly)
+- Dashboard overview
+- Model training results
+- Experiment comparison
+- Model registry
+- Monitoring and drift reports
+- Retraining history
+- MLflow experiment runs
 
-- Single-user, single-process design (SQLite, in-process scheduler). Right for a laptop and a portfolio; not for multi-replica serving.
-- No authentication (localhost only). Don't expose the ports to a network.
-- Drift tests are statistical (Evidently defaults); with large samples tiny shifts become "significant" — read the full report.
-- The "previous" slot holds one model; older versions stay in MLflow but are `archived` in the UI.
+---
+
+**MLOps** — A local, end-to-end machine learning operations platform built with open-source tools.
