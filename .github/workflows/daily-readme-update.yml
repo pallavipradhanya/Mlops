@@ -1,0 +1,44 @@
+name: Daily README update
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh README date
+        run: |
+          python - <<'PY'
+          from datetime import datetime, timezone
+          from pathlib import Path
+          import re
+
+          readme = Path("README.md")
+          text = readme.read_text(encoding="utf-8")
+          updated, count = re.subn(
+              r"(?m)^Last refreshed automatically: .*$",
+              f"Last refreshed automatically: {datetime.now(timezone.utc):%Y-%m-%d} (UTC)",
+              text,
+          )
+          if count != 1:
+              raise SystemExit(f"Expected one README refresh line, found {count}")
+          readme.write_text(updated, encoding="utf-8")
+          PY
+      - name: Commit README change
+        run: |
+          if git diff --quiet -- README.md; then
+            echo "README is already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- README.md
+          git commit -m "docs: refresh README date"
+          git push
