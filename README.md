@@ -29,7 +29,7 @@ flowchart LR
 
 ### Retraining Workflow
 
-```mermaid
+```mermaid 
 flowchart TD
   A[New labeled data] --> B{Trigger}
   B -->|manual| D
